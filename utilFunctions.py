@@ -1,22 +1,19 @@
 import api
-import pandas as pd
 
 def setDictionary(gameNum):
-  games = api.getGames()
-  # Pick the desired game from api
-  for g in games:
-    if g['id'] == gameNum:
-      game = g
-  wordLen = game['word_length']
-  # Pick the dictionary based on lenguage
-  dictionary = api.getDictionary(game['language'])
-  df = pd.DataFrame(dictionary)
+    games = api.getGames()
+    # Pick the desired game from api
+    for g in games:
+        if g['id'] == gameNum:
+            game = g
+    wordLen = game['word_length']
+    # Pick the dictionary based on lenguage
+    dictionary = api.getDictionary(game['language'])
 
-  # Pick only the valid words from the dictionary
-  utilDict = df[(df[0].map(len) == wordLen)]
-  utilDict = utilDict[0].to_list()
+    # Pick only the valid words from the dictionary
+    utilDict = [i for i in dictionary if len(i) == wordLen]
 
-  return utilDict
+    return utilDict
 
 def updateDict(dictionary, word, answer):
     newDictionary = dictionary
