@@ -10,14 +10,14 @@ def setDictionary(gameNum):
     # Pick the dictionary based on lenguage
     dictionary = api.getDictionary(game['language'])
 
-    # Pick only the valid words from the dictionary
+    # Pick only the valid words from the dictionary (Equal length)
     utilDict = [i for i in dictionary if len(i) == wordLen]
 
     return utilDict
 
+# Remove words from the dictionary according to API response, limiting the following words to send
 def updateDict(dictionary, word, answer):
     newDictionary = dictionary
-
     # Letters found with 2
     correctLetters = dict()
     # Letters found with 1
@@ -44,3 +44,9 @@ def updateDict(dictionary, word, answer):
                 # Remove words from the dictionary that contain the letter
                 newDictionary = [i for i in newDictionary if word[indx] not in i]
     return newDictionary
+
+# Strategy to select a word from the available pool
+def selectWord(dictionary):
+    word = dictionary[0]
+
+    return word
