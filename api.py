@@ -4,13 +4,13 @@ api_url = 'https://pds-wordie.herokuapp.com'
 player_key = 'OSUJGUL'
 
 # Obtener juegos activos
-def getGames():
+def getGames() -> list:
     response = requests.get(f'{api_url}/api/games/')
     games = response.json()['games']
     return games
 
 # Obtener diccionario
-def getDictionary(language):
+def getDictionary(language) -> list:
     file_url = f'{api_url}{language}'
     r = requests.get(file_url)
 
@@ -23,7 +23,7 @@ def getDictionary(language):
     return words
 
 # Enviar una jugada
-def play(game, word):
+def play(game, word) -> requests.Response:
     data = {
         'game': game,
         'key': player_key,
@@ -33,7 +33,7 @@ def play(game, word):
     return r.json()
 
 # Resetear un juego para volver a empezar (se eliminan las jugadas previas)
-def reset(game):
+def reset(game: int) -> requests.Response:
     data = {
         'game': game,
         'key': player_key
