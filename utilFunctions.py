@@ -16,29 +16,29 @@ def setDictionary(game: dict) -> list:
 def updateDict(dictionaries: list, word: str, answer: str) -> list:
 
     newUtilDictionary = []
+    # Loop for every dictionary
     for dicNum, dic in enumerate(dictionaries):
         newDictionary = dic
         # Letters found with 2
         correctLetters = dict()
         # Letters found with 1
         detectedLetters = dict()
-
         for indx, l in enumerate(answer[dicNum]):
             # Found in correct position
             if l == '2':
                 # Add letter to knowledge
                 if word[indx] not in correctLetters:
                     correctLetters[word[indx]] = 1
+                else:
+                    correctLetters[word[indx]] += 1
+                # Choose words that have the leter in the respected space
                 newDictionary = [i for i in newDictionary if i[indx] == word[indx]]
-                # print(f'Keeping {word[indx]} in {indx}')
-        for indx, l in enumerate(answer[dicNum]):
-            if l == '1':
+            elif l == '1':
                 if word[indx] not in detectedLetters:
                     detectedLetters[word[indx]] = 1
                 else:
                     detectedLetters[word[indx]] += 1
                 # The letter must be present in the word and not in the position
-                # print(f'Deleting {word[indx]} in {indx}')
                 newDictionary = [i for i in newDictionary if (word[indx] in i) and (word[indx] != i[indx])]
 
         for indx, l in enumerate(answer[dicNum]):
@@ -47,8 +47,9 @@ def updateDict(dictionaries: list, word: str, answer: str) -> list:
                 if word[indx] not in correctLetters and word[indx] not in detectedLetters:
                     # Remove words from the dictionary that contain the letter
                     newDictionary = [i for i in newDictionary if word[indx] not in i]
-                    # print(f'Deleting {word[indx]} in {indx}')
-                if word[indx] in correctLetters and word[indx] not in detectedLetters:
+                # If a 2 was found before for the same letter
+                elif word[indx] in correctLetters and word[indx] not in detectedLetters:
+                    # Remove words that have the letter in the respective spot
                     newDictionary = [i for i in newDictionary if word[indx] != i[indx]]
 
         newUtilDictionary.append(newDictionary) 
@@ -63,7 +64,6 @@ def selectWord(dictionaries: list, result: dict, fullDictionary: list, previousW
         
     # If the word is known and havent been sent yet
     if result:
-        response = result['result']
         gameState = result['words_state']
         for indx, d in enumerate(d_sizes):
             if d == 1 and gameState[indx] is False:
@@ -81,10 +81,6 @@ def selectWord(dictionaries: list, result: dict, fullDictionary: list, previousW
             word = lowCountStrategy(dictionary, fullDictionary, previousWord)
             if word != False:
                 return word
-    
-    
-    # print(f'Size: {len(dictionary)}')
-    # print(f'{dictionary[:10]}')
 
     # Strategy of diferent letters with a large dictionary
     for w in dictionary:

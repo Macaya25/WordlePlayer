@@ -21,6 +21,7 @@ def lowCountStrategy(dictionary, fullDictionary, previousWord):
         return orderedWords[0]
     return False
 
+
 def findWordsBasedOnLetters(letters: list, fullDictionary: dict):
     tempWords = []
     for fullWord in fullDictionary:
@@ -28,7 +29,7 @@ def findWordsBasedOnLetters(letters: list, fullDictionary: dict):
             tempWords.append(fullWord)
     # print(f'Temp: {tempWords}')
     
-    # Order the available words from more useful to less
+    # Order the available words from more useful to less (Amount of times it appears)
     orderedWords = []
     if tempWords:
         n = 0
